@@ -20,4 +20,53 @@ b. Создать функцию write_to_csv(), в которую переда�
 
 c. Проверить работу программы через вызов функции write_to_csv().
 """
+import re
+import csv
 
+
+def get_data():
+    os_prod_list = []
+    os_name_list = []
+    os_code_list = []
+    os_type_list = []
+
+    for i in range(1, 4):
+        with open(f'info_{i}.txt') as f:
+            data = f.read()
+            os_product = re.compile(r'Изготовитель системы:\s*\S*').findall(data)[0].split()[2]
+            os_prod_list.append(os_product)
+
+            os_name = re.compile(r'Название ОС:\s*\S*').findall(data)[0].split()[2]
+            os_name_list.append(os_name)
+
+            os_code = re.compile(r'Код продукта:\s*\S*').findall(data)[0].split()[2]
+            os_code_list.append(os_code)
+
+            os_type = re.compile(r'Тип системы:\s*\S*').findall(data)[0].split()[2]
+            os_type_list.append(os_type)
+
+    columns = ["Изготовитель системы", "Название ОС", "Код продукта", "Тип системы"]
+
+    main_data = [columns]
+
+    for i in range(1, 3):
+        row = []
+        row.append(os_prod_list[i])
+        row.append(os_name_list[i])
+        row.append(os_code_list[i])
+        row.append(os_type_list[i])
+
+        main_data.append(row)
+    return main_data
+
+
+def write_to_csv():
+    data = get_data()
+
+    with open('data.csv', 'w') as f:
+        f_writer = csv.writer(f)
+        for i in data:
+            f_writer.writerow(i)
+
+
+write_to_csv()
