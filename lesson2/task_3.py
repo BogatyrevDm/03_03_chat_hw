@@ -11,3 +11,21 @@ b. Реализовать сохранение данных в файл форм
 c. Реализовать считывание данных из созданного файла и проверить, совпадают ли они
 с исходными.
 """
+
+import yaml
+
+data_dict = {'items': ['computer', 'printer', 'keyboard', 'mouse'],
+             'quantity': 4,
+             'price': {'computer': '200\u20ac-1000\u20ac',
+                       'printer': '100\u20ac-300\u20ac',
+                       'keyboard': '5\u20ac-50\u20ac',
+                       'mouse': '4\u20ac-7\u20ac'}
+             }
+
+with open('file.yaml', 'w', encoding='utf-8') as f_w:
+    yaml.dump(data_dict, f_w, default_flow_style=False, allow_unicode=True)
+
+with open('file.yaml', 'r', encoding='utf-8') as f_r:
+    data_r = yaml.load(f_r, Loader=yaml.SafeLoader)
+
+print(data_dict == data_r)
